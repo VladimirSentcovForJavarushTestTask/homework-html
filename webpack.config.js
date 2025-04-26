@@ -5,8 +5,16 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
 module.exports = {
     entry: './src/main.js',
+    devServer: {
+        port: 3000,
+        host: '0.0.0.0',
+        headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    },
     module: {
-
         rules: [
             {
                 test: /\.css$/i,
