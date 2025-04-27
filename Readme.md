@@ -7,3 +7,32 @@
 
 ## Build production 
 ```npm run build```
+
+## Docker Development
+
+### Development Mode with Docker
+```bash
+# Start development server with hot reloading
+docker compose up dev
+
+# Rebuild and start development server
+docker compose up --build dev
+```
+
+### Production Build with Docker
+```bash
+# Build and start production server
+docker compose up app
+
+# Rebuild and start production server
+docker compose up --build app
+```
+
+### Stop Docker Containers
+```bash
+# Stop all containers
+docker compose down
+```
+
+The development server will be available at http://localhost:3000 with hot reloading enabled.
+The production server will be available at http://localhost:8080.
