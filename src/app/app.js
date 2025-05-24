@@ -1,7 +1,7 @@
 import html from "./app.html";
-import header from "./components/Header.html";
-import auth_modal from "./components/AuthModal.html";
-import transaction_table from "./components/TransactionTable.html";
+import header from "./components/transactions/Header.html";
+import auth_modal from "./components/transactions/AuthModal.html";
+import transaction_table from "./components/transactions/TransactionTable.html";
 import './app.css'
 
 const rootElement = document.getElementById('root');
