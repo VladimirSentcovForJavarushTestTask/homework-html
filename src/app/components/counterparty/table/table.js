@@ -128,11 +128,10 @@ export class CounterpartyTable {
     if (data.id) {
       // Update existing
       const index = this.findIndex(data.id);
-      if (index !== -1) {
-        this.counterparty[index] = data;
-      } else {
+      if (index === -1) {
         return;
       }
+      this.counterparty[index] = data;
     } else {
       // Add new
       data.id = crypto.randomUUID(); // Generate unique ID
