@@ -10,6 +10,14 @@ import {
 } from 'flowbite-react';
 import { Counterparty, CounterpartyFormData } from '../../../types';
 
+/**
+ * Props for the CounterpartyModal component
+ * @typedef {Object} ModalProps
+ * @property {boolean} isOpen - Controls the visibility of the modal
+ * @property {() => void} onClose - Callback function when modal is closed
+ * @property {(data: CounterpartyFormData) => void} onSave - Callback function when form is submitted
+ * @property {Counterparty} [counterparty] - Optional counterparty data for edit mode
+ */
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -17,6 +25,11 @@ type ModalProps = {
   counterparty?: Counterparty;
 };
 
+/**
+ * Validates INN (Taxpayer Identification Number)
+ * @param {string} [inn] - The INN to validate
+ * @returns {boolean} True if INN is valid (11 digits), false otherwise
+ */
 const validateInn = (inn?: string) => {
   if (!inn) {
     return false;
@@ -24,6 +37,11 @@ const validateInn = (inn?: string) => {
   return /^\d{11}$/.test(inn);
 };
 
+/**
+ * Validates KPP (Tax Registration Reason Code)
+ * @param {string} [kpp] - The KPP to validate
+ * @returns {boolean} True if KPP is valid (9 digits), false otherwise
+ */
 const validateKpp = (kpp?: string) => {
   if (!kpp) {
     return false;
@@ -31,6 +49,11 @@ const validateKpp = (kpp?: string) => {
   return /^\d{9}$/.test(kpp);
 };
 
+/**
+ * Validates address
+ * @param {string} [address] - The address to validate
+ * @returns {boolean} True if address is not empty, false otherwise
+ */
 const validateAddress = (address?: string) => {
   if (!address) {
     return false;
@@ -38,6 +61,11 @@ const validateAddress = (address?: string) => {
   return address.length > 0;
 };
 
+/**
+ * Validates name
+ * @param {string} [name] - The name to validate
+ * @returns {boolean} True if name is not empty, false otherwise
+ */
 const validateName = (name?: string) => {
   if (!name) {
     return false;
@@ -45,6 +73,11 @@ const validateName = (name?: string) => {
   return name.length > 0;
 };
 
+/**
+ * Validates all counterparty fields
+ * @param {CounterpartyFormData} counterparty - The counterparty data to validate
+ * @returns {boolean} True if all fields are valid, false otherwise
+ */
 const isValidConteParty = (counterparty: CounterpartyFormData) => {
   return (
     validateInn(counterparty.inn) &&
@@ -54,6 +87,11 @@ const isValidConteParty = (counterparty: CounterpartyFormData) => {
   );
 };
 
+/**
+ * Modal component for creating and editing counterparties
+ * @param {ModalProps} props - Component props
+ * @returns {JSX.Element} Modal component with form
+ */
 const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, counterparty }) => {
   const [formData, setFormData] = useState<CounterpartyFormData>({
     name: '',
@@ -78,6 +116,10 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
     }
   }, [counterparty]);
 
+  /**
+   * Validates form data and sets error messages
+   * @param {CounterpartyFormData} counterparty - The counterparty data to validate
+   */
   function validateForm(counterparty: CounterpartyFormData) {
     const newErrors: FormErrors = {};
     if (!validateName(counterparty.name)) {
@@ -95,6 +137,10 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
     setErrors(newErrors);
   }
 
+  /**
+   * Handles form submission
+   * @param {React.FormEvent} e - Form event
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     validateForm(formData);
@@ -104,6 +150,10 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
     }
   };
 
+  /**
+   * Handles input field changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Change event
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const copy = { ...formData };
