@@ -21,9 +21,9 @@ type RowProps = {
  * Row component for displaying a single counterparty in the table
  * @param {RowProps} props - Component props
  * @returns {JSX.Element} Table row with counterparty data and actions
- * 
+ *
  * @example
- * <Row 
+ * <Row
  *   counterparty={counterpartyData}
  *   onEdit={(counterparty) => handleEdit(counterparty)}
  *   onDelete={(id) => handleDelete(id)}

@@ -3,7 +3,7 @@ import { Counterparty } from '../app/types';
 /**
  * Service class for managing counterparty data
  * Implements the Singleton pattern to ensure a single instance throughout the application
- * 
+ *
  * @class CounterpartyService
  * @description Handles CRUD operations for counterparties with in-memory storage
  */

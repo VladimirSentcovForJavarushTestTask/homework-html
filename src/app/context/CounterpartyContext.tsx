@@ -34,7 +34,7 @@ const CounterpartyContext = createContext<CounterpartyContextType | undefined>(u
  * Hook to access the Counterparty context
  * @returns {CounterpartyContextType} The Counterparty context
  * @throws {Error} If used outside of CounterpartyProvider
- * 
+ *
  * @example
  * const { counterparties, handleAddNew } = useCounterparty();
  */
@@ -59,7 +59,7 @@ interface CounterpartyProviderProps {
  * Provider component that wraps the application and provides counterparty context
  * @param {CounterpartyProviderProps} props - Component props
  * @returns {JSX.Element} Provider component with context value
- * 
+ *
  * @example
  * <CounterpartyProvider>
  *   <App />

@@ -15,16 +15,16 @@ interface HeaderProps {
  * Header component for the application
  * @param {HeaderProps} props - Component props
  * @returns {JSX.Element} Navigation bar with logo and add button
- * 
+ *
  * @example
  * <Header onAddNew={() => handleAddNew()} />
- * 
+ *
  * @description
  * This component renders the application header with:
  * - МойСклад logo and brand name
  * - "Add" button for creating new items
  * - Responsive design that adapts to different screen sizes
- * 
+ *
  * Features:
  * - Clicking the logo navigates to the home page
  * - Clicking the "Add" button triggers the onAddNew callback

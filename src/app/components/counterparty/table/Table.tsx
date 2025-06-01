@@ -20,14 +20,14 @@ type TableProps = {
  * Table component for displaying a list of counterparties
  * @param {TableProps} props - Component props
  * @returns {JSX.Element} Table with counterparty data and actions
- * 
+ *
  * @example
  * <CounterpartyTable
  *   counterparties={counterpartiesList}
  *   onEdit={(counterparty) => handleEdit(counterparty)}
  *   onDelete={(id) => handleDelete(id)}
  * />
- * 
+ *
  * @description
  * This component renders a table with the following columns:
  * - Название (Name)
@@ -35,7 +35,7 @@ type TableProps = {
  * - Адрес (Address)
  * - КПП (Tax Registration Reason Code)
  * - Actions (Delete button)
- * 
+ *
  * Features:
  * - Double-click on a row to edit
  * - Click delete button to remove a counterparty

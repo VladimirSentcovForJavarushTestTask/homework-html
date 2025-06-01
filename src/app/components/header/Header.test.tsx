@@ -67,4 +67,4 @@ describe('Header', () => {
     const brandName = screen.getByText('МойСклад');
     expect(brandName).toHaveClass('text-xl', 'font-semibold', 'dark:text-white');
   });
-}); 
+});
