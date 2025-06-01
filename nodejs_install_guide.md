@@ -1,7 +1,7 @@
-
 # Installing Node.js and npm on macOS, Linux, and Windows
 
-This guide covers the recommended steps to install **Node.js** and **npm** (Node Package Manager) across macOS, Linux, and Windows.
+This guide covers the recommended steps to install **Node.js** and **npm** (Node Package Manager) across macOS, Linux,
+and Windows.
 
 ---
 
@@ -123,10 +123,10 @@ npm -v
 1. Go to [https://nodejs.org](https://nodejs.org)
 2. Download the **Windows Installer (.msi)**
 3. Run the installer:
-   - Choose "Next"
-   - Accept license
-   - Keep default settings
-   - Install tools for native modules (optional but recommended)
+    - Choose "Next"
+    - Accept license
+    - Keep default settings
+    - Install tools for native modules (optional but recommended)
 4. Restart your machine if prompted
 
 5. Verify:
@@ -142,7 +142,8 @@ npm -v
 
 ### Option 2: Using `nvm-windows` (Manage multiple versions)
 
-1. Download from: [https://github.com/coreybutler/nvm-windows/releases](https://github.com/coreybutler/nvm-windows/releases)
+1. Download
+   from: [https://github.com/coreybutler/nvm-windows/releases](https://github.com/coreybutler/nvm-windows/releases)
 2. Install `.exe` file (not the zip)
 3. Use it:
 
@@ -158,8 +159,8 @@ npm -v
 ## 🔧 Troubleshooting
 
 - If `node` is not found:
-  - Ensure your `PATH` includes the Node.js install directory.
-  - Restart terminal or computer.
+    - Ensure your `PATH` includes the Node.js install directory.
+    - Restart terminal or computer.
 - Use `nvm` or `nvm-windows` if you need to manage multiple versions.
 
 ---
