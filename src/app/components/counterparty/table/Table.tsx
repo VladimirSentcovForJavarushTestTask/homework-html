@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
+import { Table, TableBody, TableHead, TableHeadCell, TableRow, Spinner } from 'flowbite-react';
 import { Counterparty } from '../../../types';
 import Row from './Row';
 
@@ -34,11 +34,13 @@ export const FIELDS = [
  * Props for the CounterpartyTable component
  * @typedef {Object} TableProps
  * @property {Counterparty[]} counterparties - Array of counterparty data to display in the table
+ * @property {boolean} isLoading - Indicates if data is currently being loaded
  * @property {(counterparty: Counterparty) => void} onEdit - Callback function when a row is edited
  * @property {(id: string) => void} onDelete - Callback function when a row is deleted
  */
 type TableProps = {
   counterparties: Counterparty[];
+  isLoading: boolean;
   onEdit: (counterparty: Counterparty) => void;
   onDelete: (id: string) => void;
 };
@@ -51,6 +53,7 @@ type TableProps = {
  * @example
  * <CounterpartyTable
  *   counterparties={counterpartiesList}
+ *   isLoading={false}
  *   onEdit={(counterparty) => handleEdit(counterparty)}
  *   onDelete={(id) => handleDelete(id)}
  * />
@@ -67,8 +70,23 @@ type TableProps = {
  * - Double-click on a row to edit
  * - Click delete button to remove a counterparty
  * - Responsive design with horizontal scroll for small screens
+ * - Loading state with spinner
  */
-const CounterpartyTable: React.FC<TableProps> = ({ counterparties, onEdit, onDelete }) => {
+const CounterpartyTable: React.FC<TableProps> = ({
+  counterparties,
+  isLoading,
+  onEdit,
+  onDelete,
+}) => {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        <Spinner size="xl" />
+        <span className="ml-3 text-gray-500">Загрузка...</span>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto">
       <Table>

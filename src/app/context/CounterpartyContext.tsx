@@ -7,6 +7,7 @@ import counterpartyService from '../../services/CounterpartyService';
  * @interface CounterpartyContextType
  * @property {Counterparty[]} counterparties - List of all counterparties
  * @property {boolean} isModalOpen - Controls the visibility of the modal
+ * @property {boolean} isLoading - Indicates if data is currently being loaded
  * @property {Counterparty | undefined} editingCounterparty - Currently edited counterparty, if any
  * @property {(isOpen: boolean) => void} setIsModalOpen - Function to control modal visibility
  * @property {() => void} handleAddNew - Function to handle adding a new counterparty
@@ -17,6 +18,7 @@ import counterpartyService from '../../services/CounterpartyService';
 interface CounterpartyContextType {
   counterparties: Counterparty[];
   isModalOpen: boolean;
+  isLoading: boolean;
   editingCounterparty: Counterparty | undefined;
   setIsModalOpen: (isOpen: boolean) => void;
   handleAddNew: () => void;
@@ -68,6 +70,7 @@ interface CounterpartyProviderProps {
 export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ children }) => {
   const [counterparties, setCounterparties] = useState<Counterparty[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [editingCounterparty, setEditingCounterparty] = useState<Counterparty | undefined>();
 
   useEffect(() => {
@@ -80,10 +83,13 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
    */
   const loadCounterparties = async () => {
     try {
+      setIsLoading(true);
       const data = await counterpartyService.getAllCounterparties();
       setCounterparties(data);
     } catch (error) {
       console.error('Failed to load counterparties:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -147,6 +153,7 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
   const value = {
     counterparties,
     isModalOpen,
+    isLoading,
     editingCounterparty,
     setIsModalOpen,
     handleAddNew,

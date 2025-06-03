@@ -8,6 +8,7 @@ const AppContent: React.FC = () => {
   const {
     counterparties,
     isModalOpen,
+    isLoading,
     editingCounterparty,
     setIsModalOpen,
     handleAddNew,
@@ -24,6 +25,7 @@ const AppContent: React.FC = () => {
           <div className="mt-8">
             <CounterpartyTable
               counterparties={counterparties}
+              isLoading={isLoading}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
