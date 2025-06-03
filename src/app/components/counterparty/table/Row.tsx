@@ -3,6 +3,7 @@ import React from 'react';
 import { Counterparty } from '../../../types';
 import './table.css';
 import { escapeHtml } from '../../../utils/utils';
+import { FIELDS } from './Table';
 
 /**
  * Props for the Row component
@@ -38,10 +39,9 @@ const Row = ({ counterparty, onEdit, onDelete }: RowProps) => {
         onEdit(counterparty);
       }}
     >
-      <TableCell>{escapeHtml(counterparty.name)}</TableCell>
-      <TableCell>{escapeHtml(counterparty.inn)}</TableCell>
-      <TableCell>{escapeHtml(counterparty.address)}</TableCell>
-      <TableCell>{escapeHtml(counterparty.kpp)}</TableCell>
+      {FIELDS.map(({ key }) => (
+        <TableCell key={key}>{escapeHtml(counterparty[key])}</TableCell>
+      ))}
       <TableCell>
         <Button
           className="delete-btn dark:border-gray-700"

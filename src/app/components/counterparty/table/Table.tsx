@@ -4,6 +4,33 @@ import { Counterparty } from '../../../types';
 import Row from './Row';
 
 /**
+ * Type definition for a field in the counterparty table
+ * @typedef {Object} TableField
+ * @property {keyof Counterparty} key - The key of the field in the Counterparty interface
+ * @property {string} label - The display label for the field in Russian
+ */
+type TableField = {
+  key: keyof Counterparty;
+  label: string;
+};
+
+/**
+ * Array of fields to display in the counterparty table
+ * @constant
+ * @type {readonly TableField[]}
+ * @description Defines the structure and order of fields in the counterparty table
+ * Each field contains:
+ * - key: The property name from the Counterparty interface
+ * - label: The display name in Russian
+ */
+export const FIELDS = [
+  { key: 'name', label: 'Название' },
+  { key: 'inn', label: 'ИНН' },
+  { key: 'address', label: 'Адрес' },
+  { key: 'kpp', label: 'КПП' },
+] as const;
+
+/**
  * Props for the CounterpartyTable component
  * @typedef {Object} TableProps
  * @property {Counterparty[]} counterparties - Array of counterparty data to display in the table
@@ -47,10 +74,9 @@ const CounterpartyTable: React.FC<TableProps> = ({ counterparties, onEdit, onDel
       <Table>
         <TableHead>
           <TableRow>
-            <TableHeadCell>Название</TableHeadCell>
-            <TableHeadCell>ИНН</TableHeadCell>
-            <TableHeadCell>Адрес</TableHeadCell>
-            <TableHeadCell>КПП</TableHeadCell>
+            {FIELDS.map(({ key, label }) => (
+              <TableHeadCell key={key}>{label}</TableHeadCell>
+            ))}
             <TableHeadCell>
               <span className="sr-only">Действия</span>
             </TableHeadCell>
