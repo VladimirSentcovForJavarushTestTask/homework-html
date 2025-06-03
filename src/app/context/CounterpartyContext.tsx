@@ -28,7 +28,7 @@ interface CounterpartyContextType {
 /**
  * Context for managing counterparty data and operations
  */
-const CounterpartyContext = createContext<CounterpartyContextType | undefined>(undefined);
+const CounterpartyContext = createContext<CounterpartyContextType | null>(null);
 
 /**
  * Hook to access the Counterparty context
