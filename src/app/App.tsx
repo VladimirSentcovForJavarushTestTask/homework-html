@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/header/Header';
 import CounterpartyTable from './components/counterparty/table/Table';
 import CounterpartyModal from './components/counterparty/modal/Modal';
-import { CounterpartyProvider, useCounterparty } from './context/CounterpartyContext';
+import { CounterpartyProvider, useCounterpartyContext } from './context/CounterpartyContext';
 
 const AppContent: React.FC = () => {
   const {
@@ -14,7 +14,7 @@ const AppContent: React.FC = () => {
     handleEdit,
     handleDelete,
     handleSave,
-  } = useCounterparty();
+  } = useCounterpartyContext();
 
   return (
     <div className="min-h-screen bg-gray-100">

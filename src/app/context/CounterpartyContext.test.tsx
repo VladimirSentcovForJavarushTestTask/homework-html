@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { CounterpartyProvider, useCounterparty } from './CounterpartyContext';
+import { CounterpartyProvider, useCounterpartyContext } from './CounterpartyContext';
 import counterpartyService from '../../services/CounterpartyService';
 
 // Mock the counterparty service
@@ -42,7 +42,7 @@ jest.mock('../../services/CounterpartyService', () => ({
 // Test component that uses the context
 const TestComponent = () => {
   const { counterparties, isModalOpen, handleAddNew, handleEdit, handleDelete, handleSave } =
-    useCounterparty();
+    useCounterpartyContext();
 
   return (
     <div>

@@ -36,9 +36,9 @@ const CounterpartyContext = createContext<CounterpartyContextType | undefined>(u
  * @throws {Error} If used outside of CounterpartyProvider
  *
  * @example
- * const { counterparties, handleAddNew } = useCounterparty();
+ * const { counterparties, handleAddNew } = useCounterpartyContext();
  */
-export const useCounterparty = () => {
+export const useCounterpartyContext = () => {
   const context = useContext(CounterpartyContext);
   if (!context) {
     throw new Error('useCounterparty must be used within a CounterpartyProvider');
