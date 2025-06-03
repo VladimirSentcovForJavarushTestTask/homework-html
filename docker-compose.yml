@@ -9,11 +9,34 @@ services:
       - "8080:80"
     volumes:
       - ./src:/app/src
-    
+
+  test:
+    image: node:20-alpine
+    working_dir: /app
+    command: npm run test
+    volumes:
+      - .:/app
+
+  format:
+    image: node:20-alpine
+    working_dir: /app
+    command: npm run format
+    volumes:
+      - .:/app
+
+  lint:
+    image: node:20-alpine
+    working_dir: /app
+    command: npm run lint
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+
   dev:
     image: node:20-alpine
     working_dir: /app
-    command: npm run serve
+    command: npm run dev
     ports:
       - "3000:3000"
     volumes:

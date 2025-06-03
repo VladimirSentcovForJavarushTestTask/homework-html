@@ -1,9 +1,9 @@
 #counterparty-modal {
-    transition: opacity 0.2s ease-in-out;
-    opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
 }
 
 #counterparty-modal.hidden {
-    opacity: 0;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
