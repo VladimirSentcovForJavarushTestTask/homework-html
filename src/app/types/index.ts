@@ -13,3 +13,10 @@ export interface CounterpartyFormData {
   address: string;
   kpp: string;
 }
+
+export type FormErrors = {
+  inn?: string;
+  kpp?: string;
+  name?: string;
+  address?: string;
+};
