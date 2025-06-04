@@ -35,13 +35,13 @@ export const FIELDS = [
  * @typedef {Object} TableProps
  * @property {Counterparty[]} counterparties - Array of counterparty data to display in the table
  * @property {boolean} isLoading - Indicates if data is currently being loaded
- * @property {(counterparty: Counterparty) => void} onEdit - Callback function when a row is edited
+ * @property {(counterpartyId: string) => void} onEdit - Callback function when a row is edited
  * @property {(id: string) => void} onDelete - Callback function when a row is deleted
  */
 type TableProps = {
   counterparties: Counterparty[];
   isLoading: boolean;
-  onEdit: (counterparty: Counterparty) => void;
+  onEdit: (counterpartyId: string) => void;
   onDelete: (id: string) => void;
 };
 

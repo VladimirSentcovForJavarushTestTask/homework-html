@@ -22,6 +22,7 @@ export default [
         console: 'readonly',
         crypto: 'readonly',
         HTMLInputElement: 'readonly',
+        fetch: 'readonly',
       },
     },
     plugins: {

@@ -10,7 +10,9 @@
     "postinstall": "flowbite-react patch",
     "lint": "eslint src --ext .ts,.tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "test": "jest"
+    "test": "jest",
+    "init-db": "node scripts/init-db.cjs",
+    "server": "json-server --watch db.json --port 3001"
   },
   "author": "",
   "license": "ISC",

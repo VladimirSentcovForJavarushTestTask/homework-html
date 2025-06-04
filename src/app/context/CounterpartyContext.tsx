@@ -22,7 +22,7 @@ interface CounterpartyContextType {
   editingCounterparty: Counterparty | undefined;
   setIsModalOpen: (isOpen: boolean) => void;
   handleAddNew: () => void;
-  handleEdit: (counterparty: Counterparty) => void;
+  handleEdit: (counterpartyId: string) => void;
   handleDelete: (id: string) => Promise<void>;
   handleSave: (data: CounterpartyFormData) => Promise<void>;
 }
@@ -104,10 +104,11 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
 
   /**
    * Handles editing an existing counterparty
-   * @param {Counterparty} counterparty - The counterparty to edit
+   * @param {string} counterpartyId - The counterparty to edit
    * @public
    */
-  const handleEdit = (counterparty: Counterparty) => {
+  const handleEdit = async (counterpartyId: string) => {
+    const counterparty = await counterpartyService.getCounterpartyById(counterpartyId);
     setEditingCounterparty(counterparty);
     setIsModalOpen(true);
   };
