@@ -101,7 +101,6 @@ export class CounterpartyService {
 
   /**
    * Creates a new counterparty
-   * @param {CounterpartyFormData} counterpartyFormData - The counterparty data to create
    * @returns {Promise<Counterparty[]>} Promise resolving to the updated array of counterparties
    * @throws {Error} If the API request fails
    * @public
@@ -119,9 +118,9 @@ export class CounterpartyService {
    * } catch (error) {
    *   console.error('Failed to create counterparty:', error);
    * }
+   * @param counterparty
    */
-  async createCounterparty(counterpartyFormData: CounterpartyFormData): Promise<Counterparty[]> {
-    const counterparty: Counterparty = { ...counterpartyFormData, id: crypto.randomUUID() };
+  async createCounterparty(counterparty: Counterparty): Promise<Counterparty[]> {
     try {
       const response = await fetch(`${API_URL}/counterparties`, {
         method: 'POST',
