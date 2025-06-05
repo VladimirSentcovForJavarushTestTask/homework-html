@@ -1,6 +1,14 @@
 version: '3.8'
 
 services:
+
+  install:
+    image: node:23.11-alpine
+    working_dir: /app
+    command: npm install
+    volumes:
+      - .:/app
+
   app:
     build:
       context: .
@@ -9,30 +17,32 @@ services:
       - "8080:80"
     volumes:
       - ./src:/app/src
+    depends_on:
+      - test
+      - json-server
 
   test:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run test
     volumes:
       - .:/app
 
   format:
-    image: node:20-alpine
-    working_dir: /app
+    image: node:23.11-alpine
     command: npm run format
     volumes:
       - .:/app
 
   lint:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run lint
     volumes:
       - .:/app
 
   dev:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run dev
     ports:
@@ -47,7 +57,7 @@ services:
       - json-server
 
   json-server:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: sh -c "npm run init-db && npm run server"
     ports:

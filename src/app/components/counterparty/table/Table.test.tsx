@@ -27,6 +27,7 @@ describe('CounterpartyTable', () => {
       <CounterpartyTable
         counterparties={mockCounterparties}
         isLoading={false}
+        loadSuccess={true}
         onEdit={jest.fn()}
         onDelete={jest.fn()}
       />
@@ -50,6 +51,7 @@ describe('CounterpartyTable', () => {
         counterparties={mockCounterparties}
         isLoading={false}
         onEdit={onEdit}
+        loadSuccess={true}
         onDelete={onDelete}
       />
     );
@@ -69,6 +71,7 @@ describe('CounterpartyTable', () => {
         counterparties={mockCounterparties}
         isLoading={true}
         onEdit={jest.fn()}
+        loadSuccess={true}
         onDelete={jest.fn()}
       />
     );
@@ -82,5 +85,27 @@ describe('CounterpartyTable', () => {
     // Verify that table content is not shown
     expect(screen.queryByText(/ООО Компания 42/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/ИП Иванов И.И./i)).not.toBeInTheDocument();
+  });
+
+  test('shows error message when loadSuccess is false', () => {
+    render(
+      <CounterpartyTable
+        counterparties={mockCounterparties}
+        isLoading={false}
+        loadSuccess={false}
+        onEdit={jest.fn()}
+        onDelete={jest.fn()}
+      />
+    );
+
+    // Check if error message is present
+    expect(screen.getByText(/Ошибка загрузки данных/i)).toBeInTheDocument();
+
+    // Verify that table content is not shown
+    expect(screen.queryByText(/ООО Компания 42/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/ИП Иванов И.И./i)).not.toBeInTheDocument();
+
+    // Verify that loading spinner is not shown
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });
