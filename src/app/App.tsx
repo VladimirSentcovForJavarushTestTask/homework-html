@@ -10,6 +10,7 @@ const AppContent: React.FC = () => {
     isModalOpen,
     isLoading,
     editingCounterparty,
+    loadedSuccess,
     setIsModalOpen,
     handleAddNew,
     handleEdit,
@@ -24,6 +25,7 @@ const AppContent: React.FC = () => {
         <main className="py-8">
           <div className="mt-8">
             <CounterpartyTable
+              loadSuccess={loadedSuccess}
               counterparties={counterparties}
               isLoading={isLoading}
               onEdit={handleEdit}

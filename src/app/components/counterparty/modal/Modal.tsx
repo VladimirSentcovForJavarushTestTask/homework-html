@@ -74,7 +74,9 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
     validateForm(copy, setErrors);
     setFormData(copy);
   };
-
+  const colorCalculator = (fieldName: keyof FormErrors) => {
+    return errors[fieldName] ? 'failure' : formData[fieldName] ? 'success' : 'gray';
+  };
   return (
     <Modal show={isOpen} onClose={onClose}>
       <ModalHeader>{counterparty ? 'Редактировать контрагента' : 'Новый контрагент'}</ModalHeader>
@@ -90,7 +92,10 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
               value={formData.name}
               onChange={handleChange}
               required
-              color={errors.name ? 'failure' : undefined}
+              placeholder="МойСклад"
+              title={'Name not empty'}
+              minLength={1}
+              color={colorCalculator('name')}
             />
             {errors.name && <p className="text-red-600 text-xs mt-1">{errors.name}</p>}
           </div>
@@ -104,7 +109,13 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
               value={formData.inn}
               onChange={handleChange}
               required
-              color={errors.inn ? 'failure' : undefined}
+              color={colorCalculator('inn')}
+              pattern="[0-9]{11}"
+              title="ИНН должен состоять из 11 цифр"
+              placeholder="12345678901"
+              inputMode="numeric"
+              maxLength={11}
+              minLength={11}
             />
             {errors.inn && <p className="text-red-600 text-xs mt-1">{errors.inn}</p>}
           </div>
@@ -118,7 +129,9 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
               value={formData.address}
               onChange={handleChange}
               required
-              color={errors.address ? 'failure' : undefined}
+              color={colorCalculator('address')}
+              placeholder="Москва, ул. Ленина, д. 1"
+              minLength={1}
             />
             {errors.address && <p className="text-red-600 text-xs mt-1">{errors.address}</p>}
           </div>
@@ -132,7 +145,13 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
               value={formData.kpp}
               onChange={handleChange}
               required
-              color={errors.kpp ? 'failure' : undefined}
+              color={colorCalculator('kpp')}
+              pattern="[0-9]{9}"
+              title="КПП должен состоять из 9 цифр"
+              placeholder="123456789"
+              inputMode="numeric"
+              maxLength={9}
+              minLength={9}
             />
             {errors.kpp && <p className="text-red-600 text-xs mt-1">{errors.kpp}</p>}
           </div>

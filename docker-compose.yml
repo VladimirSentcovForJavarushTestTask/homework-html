@@ -9,6 +9,9 @@ services:
       - "8080:80"
     volumes:
       - ./src:/app/src
+    depends_on:
+      - test
+      - json-server
 
   test:
     image: node:20-alpine

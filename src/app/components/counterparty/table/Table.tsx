@@ -35,10 +35,12 @@ export const FIELDS = [
  * @typedef {Object} TableProps
  * @property {Counterparty[]} counterparties - Array of counterparty data to display in the table
  * @property {boolean} isLoading - Indicates if data is currently being loaded
+ * @property {boolean} loadSuccess - Indicates if the data was loaded successfully
  * @property {(counterpartyId: string) => void} onEdit - Callback function when a row is edited
  * @property {(id: string) => void} onDelete - Callback function when a row is deleted
  */
 type TableProps = {
+  loadSuccess: boolean;
   counterparties: Counterparty[];
   isLoading: boolean;
   onEdit: (counterpartyId: string) => void;
@@ -54,6 +56,7 @@ type TableProps = {
  * <CounterpartyTable
  *   counterparties={counterpartiesList}
  *   isLoading={false}
+ *   loadSuccess={true}
  *   onEdit={(counterparty) => handleEdit(counterparty)}
  *   onDelete={(id) => handleDelete(id)}
  * />
@@ -71,8 +74,11 @@ type TableProps = {
  * - Click delete button to remove a counterparty
  * - Responsive design with horizontal scroll for small screens
  * - Loading state with spinner
+ * - Error state with message
+ * - Empty state with message
  */
 const CounterpartyTable: React.FC<TableProps> = ({
+  loadSuccess,
   counterparties,
   isLoading,
   onEdit,
@@ -83,6 +89,14 @@ const CounterpartyTable: React.FC<TableProps> = ({
       <div className="flex justify-center items-center h-32">
         <Spinner size="xl" />
         <span className="ml-3 text-gray-500">Загрузка...</span>
+      </div>
+    );
+  }
+
+  if (!loadSuccess) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        <span className="text-red-600">Ошибка загрузки данных</span>
       </div>
     );
   }
@@ -111,6 +125,11 @@ const CounterpartyTable: React.FC<TableProps> = ({
           ))}
         </TableBody>
       </Table>
+      {counterparties.length === 0 && (
+        <div className="flex justify-center items-center h-32">
+          <span className="text-gray-500">Нет данных</span>
+        </div>
+      )}
     </div>
   );
 };
