@@ -51,7 +51,7 @@ const TestComponent = () => {
         {counterparties.map((c) => (
           <div key={c.id}>
             <span>{c.name}</span>
-            <button onClick={() => handleEdit(c)}>Edit</button>
+            <button onClick={() => handleEdit(c.id)}>Edit</button>
             <button onClick={() => handleDelete(c.id)}>Delete</button>
           </div>
         ))}
