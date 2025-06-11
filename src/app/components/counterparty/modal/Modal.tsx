@@ -32,11 +32,14 @@ type ModalProps = {
  * @returns {JSX.Element} Modal component with form
  */
 const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, counterparty }) => {
-  const [formData, setFormData] = useState<CounterpartyFormData>({
+  const initialFormData: CounterpartyFormData = {
     name: '',
     inn: '',
     address: '',
     kpp: '',
+  };
+  const [formData, setFormData] = useState<CounterpartyFormData>({
+    ...initialFormData,
     ...counterparty,
   });
 
@@ -58,6 +61,7 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
     if (isValidConteParty(formData)) {
       onSave(formData);
       onClose();
+      setFormData(initialFormData);
     }
   };
 
@@ -158,7 +162,7 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
         </form>
       </ModalBody>
       <ModalFooter>
-        <Button color="gray" onClick={onClose}>
+        <Button color="gray" onClick={() => onClose()}>
           Отмена
         </Button>
         <Button onClick={handleSubmit} disabled={!isValidConteParty({ ...formData })}>

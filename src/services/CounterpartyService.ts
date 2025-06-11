@@ -1,10 +1,5 @@
-import { Counterparty, CounterpartyFormData } from '../app/types';
-
-/**
- * Base URL for the API endpoints
- * @constant
- */
-const API_URL = 'http://localhost:3001';
+import { Counterparty } from '../app/types';
+import apiService from './ApiService';
 
 /**
  * Service class for managing counterparty data
@@ -60,7 +55,7 @@ export class CounterpartyService {
    */
   async getAllCounterparties(): Promise<Counterparty[]> {
     try {
-      const response = await fetch(`${API_URL}/counterparties`);
+      const response = await apiService.get('/counterparties');
       if (!response.ok) {
         throw new Error('Failed to fetch counterparties');
       }
@@ -88,7 +83,7 @@ export class CounterpartyService {
    */
   async getCounterpartyById(id: string): Promise<Counterparty> {
     try {
-      const response = await fetch(`${API_URL}/counterparties/${id}`);
+      const response = await apiService.get(`/counterparties/${id}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch counterparty with id ${id}`);
       }
@@ -122,13 +117,7 @@ export class CounterpartyService {
    */
   async createCounterparty(counterparty: Counterparty): Promise<Counterparty[]> {
     try {
-      const response = await fetch(`${API_URL}/counterparties`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(counterparty),
-      });
+      const response = await apiService.post('/counterparties', counterparty);
       if (!response.ok) {
         throw new Error('Failed to create counterparty');
       }
@@ -164,13 +153,7 @@ export class CounterpartyService {
     counterparty: Partial<Counterparty>
   ): Promise<Counterparty[]> {
     try {
-      const response = await fetch(`${API_URL}/counterparties/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(counterparty),
-      });
+      const response = await apiService.put(`/counterparties/${id}`, counterparty);
       if (!response.ok) {
         throw new Error(`Failed to update counterparty with id ${id}`);
       }
@@ -199,9 +182,7 @@ export class CounterpartyService {
    */
   async deleteCounterparty(id: string): Promise<Counterparty[]> {
     try {
-      const response = await fetch(`${API_URL}/counterparties/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await apiService.delete(`/counterparties/${id}`);
       if (!response.ok) {
         throw new Error(`Failed to delete counterparty with id ${id}`);
       }

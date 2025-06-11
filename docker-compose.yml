@@ -30,6 +30,7 @@ services:
 
   format:
     image: node:23.11-alpine
+    working_dir: /app
     command: npm run format
     volumes:
       - .:/app

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Table, TableBody, TableHead, TableHeadCell, TableRow, Spinner } from 'flowbite-react';
+import { Spinner, Table, TableBody, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
 import { Counterparty } from '../../../types';
 import Row from './Row';
+import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 
 /**
  * Type definition for a field in the counterparty table
@@ -31,35 +32,9 @@ export const FIELDS = [
 ] as const;
 
 /**
- * Props for the CounterpartyTable component
- * @typedef {Object} TableProps
- * @property {Counterparty[]} counterparties - Array of counterparty data to display in the table
- * @property {boolean} isLoading - Indicates if data is currently being loaded
- * @property {boolean} loadSuccess - Indicates if the data was loaded successfully
- * @property {(counterpartyId: string) => void} onEdit - Callback function when a row is edited
- * @property {(id: string) => void} onDelete - Callback function when a row is deleted
- */
-type TableProps = {
-  loadSuccess: boolean;
-  counterparties: Counterparty[];
-  isLoading: boolean;
-  onEdit: (counterpartyId: string) => void;
-  onDelete: (id: string) => void;
-};
-
-/**
  * Table component for displaying a list of counterparties
- * @param {TableProps} props - Component props
  * @returns {JSX.Element} Table with counterparty data and actions
  *
- * @example
- * <CounterpartyTable
- *   counterparties={counterpartiesList}
- *   isLoading={false}
- *   loadSuccess={true}
- *   onEdit={(counterparty) => handleEdit(counterparty)}
- *   onDelete={(id) => handleDelete(id)}
- * />
  *
  * @description
  * This component renders a table with the following columns:
@@ -77,13 +52,10 @@ type TableProps = {
  * - Error state with message
  * - Empty state with message
  */
-const CounterpartyTable: React.FC<TableProps> = ({
-  loadSuccess,
-  counterparties,
-  isLoading,
-  onEdit,
-  onDelete,
-}) => {
+const CounterpartyTable = () => {
+  const { counterparties, isLoading, loadedSuccess, handleEdit, handleDelete } =
+    useCounterpartyContext();
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-32">
@@ -93,7 +65,7 @@ const CounterpartyTable: React.FC<TableProps> = ({
     );
   }
 
-  if (!loadSuccess) {
+  if (!loadedSuccess) {
     return (
       <div className="flex justify-center items-center h-32">
         <span className="text-red-600">Ошибка загрузки данных</span>
@@ -119,15 +91,19 @@ const CounterpartyTable: React.FC<TableProps> = ({
             <Row
               key={counterparty.id}
               counterparty={counterparty}
-              onEdit={onEdit}
-              onDelete={onDelete}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </TableBody>
       </Table>
-      {counterparties.length === 0 && (
+      {counterparties.length === 0 ? (
         <div className="flex justify-center items-center h-32">
           <span className="text-gray-500">Нет данных</span>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center h-32">
+          <span className="text-gray-500">Получено {counterparties.length} контрагентов</span>
         </div>
       )}
     </div>
