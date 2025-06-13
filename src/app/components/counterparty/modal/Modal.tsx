@@ -72,8 +72,8 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const copy = { ...formData };
-    if (name === 'inn' || name === 'kpp' || name === 'name' || name === 'address') {
-      copy[name] = value;
+    if (name in formData) {
+      copy[name as keyof CounterpartyFormData] = value;
     }
     validateForm(copy, setErrors);
     setFormData(copy);
@@ -81,6 +81,7 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
   const colorCalculator = (fieldName: keyof FormErrors) => {
     return errors[fieldName] ? 'failure' : formData[fieldName] ? 'success' : 'gray';
   };
+
   return (
     <Modal show={isOpen} onClose={onClose}>
       <ModalHeader>{counterparty ? 'Редактировать контрагента' : 'Новый контрагент'}</ModalHeader>
