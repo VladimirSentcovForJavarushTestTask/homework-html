@@ -24,7 +24,7 @@ type TableField = {
  * - key: The property name from the Counterparty interface
  * - label: The display name in Russian
  */
-export const FIELDS = [
+export const FIELDS: readonly TableField[] = [
   { key: 'name', label: 'Название' },
   { key: 'inn', label: 'ИНН' },
   { key: 'address', label: 'Адрес' },

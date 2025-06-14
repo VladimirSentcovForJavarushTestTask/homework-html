@@ -72,7 +72,6 @@ describe('CounterpartyModal', () => {
 
     fireEvent.click(screen.getByText(/Сохранить/i));
     expect(mockContext.handleSave).toHaveBeenCalled();
-    expect(mockContext.setIsModalOpen).toHaveBeenCalledWith(false);
   });
 
   it('calls setIsModalOpen when cancel is clicked', () => {

@@ -8,8 +8,8 @@ import {
   ModalHeader,
   TextInput,
 } from 'flowbite-react';
-import { CounterpartyFormData, FormErrors } from '../../../types';
-import { isValidConteParty, validateForm } from './ModalFormValidator';
+import { CounterpartyFormData, CounterpartyFormErrors } from '../../../types';
+import { isCounterpartyValid, validateForm } from './ModalFormValidator';
 import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 
 /**
@@ -23,9 +23,11 @@ const CounterpartyModal = () => {
     editingCounterparty: counterparty,
     setIsModalOpen,
   } = useCounterpartyContext();
+
   const onClose = () => {
     setIsModalOpen(false);
   };
+
   const initialFormData: CounterpartyFormData = {
     name: '',
     inn: '',
@@ -37,15 +39,14 @@ const CounterpartyModal = () => {
     ...counterparty,
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<CounterpartyFormErrors>({});
 
   useEffect(() => {
     if (counterparty) {
       setFormData(counterparty);
+      return;
     }
-    if (!counterparty) {
-      setFormData(initialFormData);
-    }
+    setFormData(initialFormData);
   }, [counterparty]);
 
   /**
@@ -55,10 +56,8 @@ const CounterpartyModal = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     validateForm(formData, setErrors);
-    if (isValidConteParty(formData)) {
+    if (isCounterpartyValid(formData)) {
       onSave(formData);
-      onClose();
-      setFormData(initialFormData);
     }
   };
 
@@ -75,7 +74,7 @@ const CounterpartyModal = () => {
     validateForm(copy, setErrors);
     setFormData(copy);
   };
-  const colorCalculator = (fieldName: keyof FormErrors) => {
+  const colorCalculator = (fieldName: keyof CounterpartyFormErrors) => {
     return errors[fieldName] ? 'failure' : formData[fieldName] ? 'success' : 'gray';
   };
 
@@ -163,7 +162,7 @@ const CounterpartyModal = () => {
         <Button color="gray" onClick={() => onClose()}>
           Отмена
         </Button>
-        <Button onClick={handleSubmit} disabled={!isValidConteParty({ ...formData })}>
+        <Button onClick={handleSubmit} disabled={!isCounterpartyValid({ ...formData })}>
           Сохранить
         </Button>
       </ModalFooter>

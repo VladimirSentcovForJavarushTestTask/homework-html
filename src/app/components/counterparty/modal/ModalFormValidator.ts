@@ -1,11 +1,11 @@
-import { CounterpartyFormData, FormErrors } from '../../../types';
+import { CounterpartyFormData, CounterpartyFormErrors } from '../../../types';
 
 /**
  * Validates INN (Taxpayer Identification Number)
  * @param {string} [inn] - The INN to validate
  * @returns {boolean} True if INN is valid (11 digits), false otherwise
  */
-export const validateInn = (inn?: string): boolean => {
+const validateInn = (inn?: string): boolean => {
   if (!inn) {
     return false;
   }
@@ -17,7 +17,7 @@ export const validateInn = (inn?: string): boolean => {
  * @param {string} [kpp] - The KPP to validate
  * @returns {boolean} True if KPP is valid (9 digits), false otherwise
  */
-export const validateKpp = (kpp?: string): boolean => {
+const validateKpp = (kpp?: string): boolean => {
   if (!kpp) {
     return false;
   }
@@ -29,7 +29,7 @@ export const validateKpp = (kpp?: string): boolean => {
  * @param {string} [address] - The address to validate
  * @returns {boolean} True if address is not empty, false otherwise
  */
-export const validateAddress = (address?: string): boolean => {
+const validateAddress = (address?: string): boolean => {
   if (!address) {
     return false;
   }
@@ -41,11 +41,25 @@ export const validateAddress = (address?: string): boolean => {
  * @param {string} [name] - The name to validate
  * @returns {boolean} True if name is not empty, false otherwise
  */
-export const validateName = (name?: string): boolean => {
+const validateName = (name?: string): boolean => {
   if (!name) {
     return false;
   }
   return name.length > 0;
+};
+
+const counterPartyFormValidator: Record<
+  keyof CounterpartyFormData,
+  {
+    message: string;
+    errorHandler: (value?: string) => boolean;
+  }
+> = {
+  name: { errorHandler: validateName, message: 'Название не может быть пустым' },
+  inn: { errorHandler: validateInn, message: 'ИНН должен содержать 11 цифр' },
+  kpp: { errorHandler: validateKpp, message: 'КПП должен содержать 9 цифр' },
+  address: { errorHandler: validateAddress, message: 'Адрес не может быть пустым' },
+  id: { errorHandler: () => true, message: '' },
 };
 
 /**
@@ -53,13 +67,14 @@ export const validateName = (name?: string): boolean => {
  * @param {CounterpartyFormData} counterparty - The counterparty data to validate
  * @returns {boolean} True if all fields are valid, false otherwise
  */
-export const isValidConteParty = (counterparty: CounterpartyFormData): boolean => {
-  return (
-    validateInn(counterparty.inn) &&
-    validateKpp(counterparty.kpp) &&
-    validateAddress(counterparty.address) &&
-    validateName(counterparty.name)
-  );
+export const isCounterpartyValid = (counterparty: CounterpartyFormData): boolean => {
+  for (const [key, value] of Object.entries(counterparty)) {
+    const validator = counterPartyFormValidator[key as keyof CounterpartyFormData];
+    if (!validator.errorHandler(value)) {
+      return false;
+    }
+  }
+  return true;
 };
 
 /**
@@ -69,20 +84,14 @@ export const isValidConteParty = (counterparty: CounterpartyFormData): boolean =
  */
 export const validateForm = (
   counterparty: CounterpartyFormData,
-  setErrors: (errors: FormErrors) => void
+  setErrors: (errors: CounterpartyFormErrors) => void
 ): void => {
-  const newErrors: FormErrors = {};
-  if (!validateName(counterparty.name)) {
-    newErrors.name = 'Название не может быть пустым';
-  }
-  if (!validateAddress(counterparty.address)) {
-    newErrors.address = 'Адрес не может быть пустым';
-  }
-  if (!validateInn(counterparty.inn)) {
-    newErrors.inn = 'ИНН должен содержать 11 цифр';
-  }
-  if (!validateKpp(counterparty.kpp)) {
-    newErrors.kpp = 'КПП должен содержать 9 цифр';
+  const newErrors: CounterpartyFormErrors = {};
+  for (const [key, value] of Object.entries(counterparty)) {
+    const validator = counterPartyFormValidator[key as keyof CounterpartyFormData];
+    if (!validator.errorHandler(value)) {
+      newErrors[key as keyof CounterpartyFormErrors] = validator.message;
+    }
   }
   setErrors(newErrors);
 };

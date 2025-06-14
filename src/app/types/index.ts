@@ -1,22 +1,16 @@
-export interface Counterparty {
-  id: string;
+export type CounterpartyFormFields = {
   name: string;
   inn: string;
   address: string;
   kpp: string;
-}
-
-export interface CounterpartyFormData {
-  id?: string;
-  name: string;
-  inn: string;
-  address: string;
-  kpp: string;
-}
-
-export type FormErrors = {
-  inn?: string;
-  kpp?: string;
-  name?: string;
-  address?: string;
 };
+
+export type CounterpartyFormErrors = Partial<Record<keyof CounterpartyFormFields, string>>;
+
+export type CounterpartyFormData = {
+  id?: string;
+} & CounterpartyFormFields;
+
+export type Counterparty = {
+  id: string;
+} & CounterpartyFormFields;
