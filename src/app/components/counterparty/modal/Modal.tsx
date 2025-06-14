@@ -14,6 +14,17 @@ import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 
 /**
  * Modal component for creating and editing counterparties
+ *
+ * This component provides a form interface for creating new counterparties or editing existing ones.
+ * It handles form validation, data submission, and error display.
+ *
+ * Features:
+ * - Form validation for all fields (name, INN, address, KPP)
+ * - Real-time validation feedback
+ * - Support for both create and edit modes
+ * - Error message display
+ * - Color-coded input fields based on validation state
+ *
  * @returns {JSX.Element} Modal component with form
  */
 const CounterpartyModal = () => {
@@ -28,19 +39,22 @@ const CounterpartyModal = () => {
     setIsModalOpen(false);
   };
 
+  // Initial form state
   const initialFormData: CounterpartyFormData = {
     name: '',
     inn: '',
     address: '',
     kpp: '',
   };
+
+  // Form state management
   const [formData, setFormData] = useState<CounterpartyFormData>({
     ...initialFormData,
     ...counterparty,
   });
-
   const [errors, setErrors] = useState<CounterpartyFormErrors>({});
 
+  // Update form data when counterparty changes
   useEffect(() => {
     if (counterparty) {
       setFormData(counterparty);
@@ -51,6 +65,8 @@ const CounterpartyModal = () => {
 
   /**
    * Handles form submission
+   * Validates form data and calls onSave if valid
+   *
    * @param {React.FormEvent} e - Form event
    */
   const handleSubmit = (e: React.FormEvent) => {
@@ -63,6 +79,8 @@ const CounterpartyModal = () => {
 
   /**
    * Handles input field changes
+   * Updates form data and validates the changed field
+   *
    * @param {React.ChangeEvent<HTMLInputElement>} e - Change event
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +92,13 @@ const CounterpartyModal = () => {
     validateForm(copy, setErrors);
     setFormData(copy);
   };
+
+  /**
+   * Determines the color of an input field based on its validation state
+   *
+   * @param {keyof CounterpartyFormErrors} fieldName - Name of the field to check
+   * @returns {'failure' | 'success' | 'gray'} Color value for the input field
+   */
   const colorCalculator = (fieldName: keyof CounterpartyFormErrors) => {
     return errors[fieldName] ? 'failure' : formData[fieldName] ? 'success' : 'gray';
   };
@@ -83,6 +108,7 @@ const CounterpartyModal = () => {
       <ModalHeader>{counterparty ? 'Редактировать контрагента' : 'Новый контрагент'}</ModalHeader>
       <ModalBody>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name field */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="name">Название</Label>
@@ -100,6 +126,8 @@ const CounterpartyModal = () => {
             />
             {errors.name && <p className="text-red-600 text-xs mt-1">{errors.name}</p>}
           </div>
+
+          {/* INN field */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="inn">ИНН</Label>
@@ -120,6 +148,8 @@ const CounterpartyModal = () => {
             />
             {errors.inn && <p className="text-red-600 text-xs mt-1">{errors.inn}</p>}
           </div>
+
+          {/* Address field */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="address">Адрес</Label>
@@ -136,6 +166,8 @@ const CounterpartyModal = () => {
             />
             {errors.address && <p className="text-red-600 text-xs mt-1">{errors.address}</p>}
           </div>
+
+          {/* KPP field */}
           <div>
             <div className="mb-2 block">
               <Label htmlFor="kpp">КПП</Label>

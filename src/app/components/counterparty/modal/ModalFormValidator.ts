@@ -2,8 +2,14 @@ import { CounterpartyFormData, CounterpartyFormErrors } from '../../../types';
 
 /**
  * Validates INN (Taxpayer Identification Number)
+ * INN must be exactly 11 digits
+ *
  * @param {string} [inn] - The INN to validate
  * @returns {boolean} True if INN is valid (11 digits), false otherwise
+ *
+ * @example
+ * validateInn('12345678901') // returns true
+ * validateInn('123') // returns false
  */
 const validateInn = (inn?: string): boolean => {
   if (!inn) {
@@ -14,8 +20,14 @@ const validateInn = (inn?: string): boolean => {
 
 /**
  * Validates KPP (Tax Registration Reason Code)
+ * KPP must be exactly 9 digits
+ *
  * @param {string} [kpp] - The KPP to validate
  * @returns {boolean} True if KPP is valid (9 digits), false otherwise
+ *
+ * @example
+ * validateKpp('123456789') // returns true
+ * validateKpp('123') // returns false
  */
 const validateKpp = (kpp?: string): boolean => {
   if (!kpp) {
@@ -26,8 +38,14 @@ const validateKpp = (kpp?: string): boolean => {
 
 /**
  * Validates address
+ * Address must not be empty
+ *
  * @param {string} [address] - The address to validate
  * @returns {boolean} True if address is not empty, false otherwise
+ *
+ * @example
+ * validateAddress('г. Москва, ул. Ленина, д. 1') // returns true
+ * validateAddress('') // returns false
  */
 const validateAddress = (address?: string): boolean => {
   if (!address) {
@@ -38,8 +56,14 @@ const validateAddress = (address?: string): boolean => {
 
 /**
  * Validates name
+ * Name must not be empty
+ *
  * @param {string} [name] - The name to validate
  * @returns {boolean} True if name is not empty, false otherwise
+ *
+ * @example
+ * validateName('ООО Компания') // returns true
+ * validateName('') // returns false
  */
 const validateName = (name?: string): boolean => {
   if (!name) {
@@ -48,6 +72,10 @@ const validateName = (name?: string): boolean => {
   return name.length > 0;
 };
 
+/**
+ * Validation rules for each form field
+ * Each field has a validation function and an error message
+ */
 const counterPartyFormValidator: Record<
   keyof CounterpartyFormData,
   {
@@ -64,8 +92,18 @@ const counterPartyFormValidator: Record<
 
 /**
  * Validates all counterparty fields
+ * Checks each field against its validation rules
+ *
  * @param {CounterpartyFormData} counterparty - The counterparty data to validate
  * @returns {boolean} True if all fields are valid, false otherwise
+ *
+ * @example
+ * isCounterpartyValid({
+ *   name: 'ООО Компания',
+ *   inn: '12345678901',
+ *   kpp: '123456789',
+ *   address: 'г. Москва'
+ * }) // returns true
  */
 export const isCounterpartyValid = (counterparty: CounterpartyFormData): boolean => {
   for (const [key, value] of Object.entries(counterparty)) {
@@ -79,8 +117,15 @@ export const isCounterpartyValid = (counterparty: CounterpartyFormData): boolean
 
 /**
  * Validates form data and sets error messages
+ * Updates the error state with validation messages for invalid fields
+ *
  * @param {CounterpartyFormData} counterparty - The counterparty data to validate
  * @param setErrors - Callback function to set error messages
+ *
+ * @example
+ * validateForm(formData, (errors) => {
+ *   console.log(errors); // { name: 'Название не может быть пустым' }
+ * });
  */
 export const validateForm = (
   counterparty: CounterpartyFormData,

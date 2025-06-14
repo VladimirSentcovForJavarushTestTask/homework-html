@@ -7,12 +7,28 @@ import apiService from './ApiService';
  * @description Handles CRUD operations for counterparties through REST API
  * Implements the Singleton pattern to ensure a single instance throughout the application
  *
+ * Features:
+ * - Singleton pattern implementation
+ * - CRUD operations for counterparties
+ * - Error handling and logging
+ * - Automatic data refresh after operations
+ * - Type safety with TypeScript
+ *
  * @example
  * // Get service instance
  * const service = CounterpartyService.getInstance();
  *
  * // Get all counterparties
  * const counterparties = await service.getAllCounterparties();
+ *
+ * // Create a new counterparty
+ * const newCounterparty = {
+ *   name: 'ООО Компания',
+ *   inn: '12345678901',
+ *   address: 'г. Москва',
+ *   kpp: '123456789'
+ * };
+ * const updatedList = await service.createCounterparty(newCounterparty);
  */
 export class CounterpartyService {
   private static instance: CounterpartyService;
@@ -25,6 +41,8 @@ export class CounterpartyService {
 
   /**
    * Gets the singleton instance of the service
+   * Creates a new instance if one doesn't exist
+   *
    * @returns {CounterpartyService} The singleton instance
    * @public
    * @static
@@ -41,6 +59,8 @@ export class CounterpartyService {
 
   /**
    * Retrieves all counterparties from the API
+   * Fetches the complete list of counterparties and handles any errors
+   *
    * @returns {Promise<Counterparty[]>} Promise resolving to an array of all counterparties
    * @throws {Error} If the API request fails
    * @public
@@ -68,6 +88,8 @@ export class CounterpartyService {
 
   /**
    * Retrieves a single counterparty by ID
+   * Fetches detailed information about a specific counterparty
+   *
    * @param {string} id - The ID of the counterparty to retrieve
    * @returns {Promise<Counterparty>} Promise resolving to the requested counterparty
    * @throws {Error} If the API request fails or counterparty is not found
@@ -96,6 +118,9 @@ export class CounterpartyService {
 
   /**
    * Creates a new counterparty
+   * Adds a new counterparty to the system and returns the updated list
+   *
+   * @param {Counterparty} counterparty - The counterparty data to create
    * @returns {Promise<Counterparty[]>} Promise resolving to the updated array of counterparties
    * @throws {Error} If the API request fails
    * @public
@@ -113,7 +138,6 @@ export class CounterpartyService {
    * } catch (error) {
    *   console.error('Failed to create counterparty:', error);
    * }
-   * @param counterparty
    */
   async createCounterparty(counterparty: Counterparty): Promise<Counterparty[]> {
     try {
@@ -130,6 +154,8 @@ export class CounterpartyService {
 
   /**
    * Updates an existing counterparty
+   * Modifies the data of an existing counterparty and returns the updated list
+   *
    * @param {string} id - The ID of the counterparty to update
    * @param {Partial<Counterparty>} counterparty - The updated counterparty data
    * @returns {Promise<Counterparty[]>} Promise resolving to the updated array of counterparties
@@ -167,6 +193,8 @@ export class CounterpartyService {
 
   /**
    * Deletes a counterparty
+   * Removes a counterparty from the system and returns the updated list
+   *
    * @param {string} id - The ID of the counterparty to delete
    * @returns {Promise<Counterparty[]>} Promise resolving to the updated array of counterparties
    * @throws {Error} If the API request fails or counterparty is not found
