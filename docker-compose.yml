@@ -1,6 +1,14 @@
 version: '3.8'
 
 services:
+
+  install:
+    image: node:23.11-alpine
+    working_dir: /app
+    command: npm install
+    volumes:
+      - .:/app
+
   app:
     build:
       context: .
@@ -9,32 +17,33 @@ services:
       - "8080:80"
     volumes:
       - ./src:/app/src
+    depends_on:
+      - test
+      - json-server
 
   test:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run test
     volumes:
       - .:/app
 
   format:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run format
     volumes:
       - .:/app
 
   lint:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run lint
-    ports:
-      - "3000:3000"
     volumes:
       - .:/app
 
   dev:
-    image: node:20-alpine
+    image: node:23.11-alpine
     working_dir: /app
     command: npm run dev
     ports:
@@ -45,4 +54,22 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+    depends_on:
+      - json-server
+
+  json-server:
+    image: node:23.11-alpine
+    working_dir: /app
+    command: sh -c "npm run init-db && npm run server"
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3001/counterparties"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 

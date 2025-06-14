@@ -9,12 +9,12 @@ import { FIELDS } from './Table';
  * Props for the Row component
  * @typedef {Object} RowProps
  * @property {Counterparty} counterparty - The counterparty data to display in the row
- * @property {(counterparty: Counterparty) => void} onEdit - Callback function when row is double-clicked for editing
+ * @property {(counterpartyId: string) => void} onEdit - Callback function when row is double-clicked for editing
  * @property {(id: string) => void} onDelete - Callback function when delete button is clicked
  */
 type RowProps = {
   counterparty: Counterparty;
-  onEdit: (counterparty: Counterparty) => void;
+  onEdit: (counterpartId: string) => void;
   onDelete: (id: string) => void;
 };
 
@@ -36,7 +36,7 @@ const Row = ({ counterparty, onEdit, onDelete }: RowProps) => {
       key={counterparty.id}
       className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
       onDoubleClick={() => {
-        onEdit(counterparty);
+        onEdit(counterparty.id);
       }}
     >
       {FIELDS.map(({ key }) => (
