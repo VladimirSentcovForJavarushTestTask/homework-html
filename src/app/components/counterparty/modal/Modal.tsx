@@ -8,30 +8,24 @@ import {
   ModalHeader,
   TextInput,
 } from 'flowbite-react';
-import { Counterparty, CounterpartyFormData, FormErrors } from '../../../types';
+import { CounterpartyFormData, FormErrors } from '../../../types';
 import { isValidConteParty, validateForm } from './ModalFormValidator';
-
-/**
- * Props for the CounterpartyModal component
- * @typedef {Object} ModalProps
- * @property {boolean} isOpen - Controls the visibility of the modal
- * @property {() => void} onClose - Callback function when modal is closed
- * @property {(data: CounterpartyFormData) => void} onSave - Callback function when form is submitted
- * @property {Counterparty} [counterparty] - Optional counterparty data for edit mode
- */
-type ModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: CounterpartyFormData) => void;
-  counterparty?: Counterparty;
-};
+import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 
 /**
  * Modal component for creating and editing counterparties
- * @param {ModalProps} props - Component props
  * @returns {JSX.Element} Modal component with form
  */
-const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, counterparty }) => {
+const CounterpartyModal = () => {
+  const {
+    isModalOpen: isOpen,
+    handleSave: onSave,
+    editingCounterparty: counterparty,
+    setIsModalOpen,
+  } = useCounterpartyContext();
+  const onClose = () => {
+    setIsModalOpen(false);
+  };
   const initialFormData: CounterpartyFormData = {
     name: '',
     inn: '',
@@ -48,6 +42,9 @@ const CounterpartyModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, coun
   useEffect(() => {
     if (counterparty) {
       setFormData(counterparty);
+    }
+    if (!counterparty) {
+      setFormData(initialFormData);
     }
   }, [counterparty]);
 

@@ -18,12 +18,7 @@ const AppContent: React.FC = () => {
           </div>
         </main>
       </div>
-      <CounterpartyModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSave}
-        counterparty={editingCounterparty}
-      />
+      <CounterpartyModal />
     </div>
   );
 };
