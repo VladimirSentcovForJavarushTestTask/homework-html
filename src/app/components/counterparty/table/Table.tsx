@@ -97,7 +97,7 @@ const CounterpartyTable = () => {
           ))}
         </TableBody>
       </Table>
-      {counterparties.length === 0 ? (
+      {counterparties.length  ? (
         <div className="flex justify-center items-center h-32">
           <span className="text-gray-500">Нет данных</span>
         </div>

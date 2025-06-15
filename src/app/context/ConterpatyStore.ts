@@ -10,7 +10,7 @@ import { Counterparty } from '../types';
  * @property {Counterparty | undefined} editingCounterparty - Currently edited counterparty, if any
  */
 export type CounterpartyContextState = {
-  counterparties: Counterparty[];
+  counterparties: readonly Counterparty[];
   isModalOpen: boolean;
   isLoading: boolean;
   loadedSuccess: boolean;
@@ -82,7 +82,10 @@ export type Action =
  * @returns {Counterparty[]} New array with replaced counterparty
  * @private
  */
-function replaceCounterparty(counterparties: Counterparty[], counterparty: Counterparty) {
+function replaceCounterparty(
+  counterparties: readonly Counterparty[],
+  counterparty: Readonly<Counterparty>
+) {
   return counterparties.map((cp) => (cp.id === counterparty.id ? counterparty : cp));
 }
 
@@ -93,7 +96,10 @@ function replaceCounterparty(counterparties: Counterparty[], counterparty: Count
  * @returns {Counterparty[]} New array with added counterparty
  * @private
  */
-function addCounterparty(counterparties: Counterparty[], counterparty: Counterparty) {
+function addCounterparty(
+  counterparties: readonly Counterparty[],
+  counterparty: Readonly<Counterparty>
+) {
   return [...counterparties, counterparty];
 }
 
@@ -104,7 +110,10 @@ function addCounterparty(counterparties: Counterparty[], counterparty: Counterpa
  * @returns {CounterpartyContextState} New state
  * @private
  */
-export const counterpartyReducer = (state: CounterpartyContextState, action: Action) => {
+export const counterpartyReducer = (
+  state: Readonly<CounterpartyContextState>,
+  action: Readonly<Action>
+) => {
   switch (action.type) {
     case ActionType.LOAD_START:
       return { ...state, isLoading: true };
