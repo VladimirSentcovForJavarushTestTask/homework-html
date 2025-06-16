@@ -5,17 +5,8 @@ import CounterpartyModal from './components/counterparty/modal/Modal';
 import { CounterpartyProvider, useCounterpartyContext } from './context/CounterpartyContext';
 
 const AppContent: React.FC = () => {
-  const {
-    counterparties,
-    isModalOpen,
-    isLoading,
-    editingCounterparty,
-    setIsModalOpen,
-    handleAddNew,
-    handleEdit,
-    handleDelete,
-    handleSave,
-  } = useCounterpartyContext();
+  const { isModalOpen, editingCounterparty, setIsModalOpen, handleAddNew, handleSave } =
+    useCounterpartyContext();
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -23,21 +14,11 @@ const AppContent: React.FC = () => {
         <Header onAddNew={handleAddNew} />
         <main className="py-8">
           <div className="mt-8">
-            <CounterpartyTable
-              counterparties={counterparties}
-              isLoading={isLoading}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
+            <CounterpartyTable />
           </div>
         </main>
       </div>
-      <CounterpartyModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSave}
-        counterparty={editingCounterparty}
-      />
+      <CounterpartyModal />
     </div>
   );
 };

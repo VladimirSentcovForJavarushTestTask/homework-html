@@ -1,7 +1,8 @@
 import React from 'react';
-import { Table, TableBody, TableHead, TableHeadCell, TableRow, Spinner } from 'flowbite-react';
+import { Spinner, Table, TableBody, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
 import { Counterparty } from '../../../types';
 import Row from './Row';
+import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 
 /**
  * Type definition for a field in the counterparty table
@@ -23,7 +24,7 @@ type TableField = {
  * - key: The property name from the Counterparty interface
  * - label: The display name in Russian
  */
-export const FIELDS = [
+export const FIELDS: readonly TableField[] = [
   { key: 'name', label: 'Название' },
   { key: 'inn', label: 'ИНН' },
   { key: 'address', label: 'Адрес' },
@@ -31,32 +32,9 @@ export const FIELDS = [
 ] as const;
 
 /**
- * Props for the CounterpartyTable component
- * @typedef {Object} TableProps
- * @property {Counterparty[]} counterparties - Array of counterparty data to display in the table
- * @property {boolean} isLoading - Indicates if data is currently being loaded
- * @property {(counterparty: Counterparty) => void} onEdit - Callback function when a row is edited
- * @property {(id: string) => void} onDelete - Callback function when a row is deleted
- */
-type TableProps = {
-  counterparties: Counterparty[];
-  isLoading: boolean;
-  onEdit: (counterparty: Counterparty) => void;
-  onDelete: (id: string) => void;
-};
-
-/**
  * Table component for displaying a list of counterparties
- * @param {TableProps} props - Component props
  * @returns {JSX.Element} Table with counterparty data and actions
  *
- * @example
- * <CounterpartyTable
- *   counterparties={counterpartiesList}
- *   isLoading={false}
- *   onEdit={(counterparty) => handleEdit(counterparty)}
- *   onDelete={(id) => handleDelete(id)}
- * />
  *
  * @description
  * This component renders a table with the following columns:
@@ -71,18 +49,26 @@ type TableProps = {
  * - Click delete button to remove a counterparty
  * - Responsive design with horizontal scroll for small screens
  * - Loading state with spinner
+ * - Error state with message
+ * - Empty state with message
  */
-const CounterpartyTable: React.FC<TableProps> = ({
-  counterparties,
-  isLoading,
-  onEdit,
-  onDelete,
-}) => {
+const CounterpartyTable = () => {
+  const { counterparties, isLoading, loadedSuccess, handleEdit, handleDelete } =
+    useCounterpartyContext();
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-32">
         <Spinner size="xl" />
         <span className="ml-3 text-gray-500">Загрузка...</span>
+      </div>
+    );
+  }
+
+  if (!loadedSuccess) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        <span className="text-red-600">Ошибка загрузки данных</span>
       </div>
     );
   }
@@ -105,12 +91,21 @@ const CounterpartyTable: React.FC<TableProps> = ({
             <Row
               key={counterparty.id}
               counterparty={counterparty}
-              onEdit={onEdit}
-              onDelete={onDelete}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </TableBody>
       </Table>
+      {counterparties.length  ? (
+        <div className="flex justify-center items-center h-32">
+          <span className="text-gray-500">Нет данных</span>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center h-32">
+          <span className="text-gray-500">Получено {counterparties.length} контрагентов</span>
+        </div>
+      )}
     </div>
   );
 };
