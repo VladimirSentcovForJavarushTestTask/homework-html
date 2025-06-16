@@ -14,16 +14,6 @@ export type CounterpartyFormFields = {
 };
 
 /**
- * Error messages for form fields
- * @interface CounterpartyFormErrors
- * @property {string} [name] - Error message for the name field
- * @property {string} [inn] - Error message for the INN field
- * @property {string} [address] - Error message for the address field
- * @property {string} [kpp] - Error message for the KPP field
- */
-export type CounterpartyFormErrors = Partial<Record<keyof CounterpartyFormFields, string>>;
-
-/**
  * Form data for creating or editing a counterparty
  * @interface CounterpartyFormData
  * @property {string} [id] - Optional ID for existing counterparties

@@ -1,4 +1,4 @@
-import { CounterpartyFormData, CounterpartyFormErrors } from '../../../types';
+import { CounterpartyFormData} from '../../../types';
 
 /**
  * Validates INN (Taxpayer Identification Number)
@@ -91,52 +91,19 @@ const counterPartyFormValidator: Record<
 };
 
 /**
- * Validates all counterparty fields
- * Checks each field against its validation rules
- *
- * @param {CounterpartyFormData} counterparty - The counterparty data to validate
- * @returns {boolean} True if all fields are valid, false otherwise
- *
- * @example
- * isCounterpartyValid({
- *   name: 'ООО Компания',
- *   inn: '12345678901',
- *   kpp: '123456789',
- *   address: 'г. Москва'
- * }) // returns true
+ * Final Form-compatible validation function
+ * @param {CounterpartyFormData} values - Form values to validate
+ * @returns {Partial<CounterpartyFormData>} Object with validation errors
  */
-export const isCounterpartyValid = (counterparty: CounterpartyFormData): boolean => {
-  for (const [key, value] of Object.entries(counterparty)) {
-    const validator = counterPartyFormValidator[key as keyof CounterpartyFormData];
-    if (!validator.errorHandler(value)) {
-      return false;
-    }
-  }
-  return true;
-};
+export const validate = (values: CounterpartyFormData): Partial<CounterpartyFormData> => {
+  const errors: Partial<CounterpartyFormData> = {};
 
-/**
- * Validates form data and sets error messages
- * Updates the error state with validation messages for invalid fields
- *
- * @param {CounterpartyFormData} counterparty - The counterparty data to validate
- * @param setErrors - Callback function to set error messages
- *
- * @example
- * validateForm(formData, (errors) => {
- *   console.log(errors); // { name: 'Название не может быть пустым' }
- * });
- */
-export const validateForm = (
-  counterparty: CounterpartyFormData,
-  setErrors: (errors: CounterpartyFormErrors) => void
-): void => {
-  const newErrors: CounterpartyFormErrors = {};
-  for (const [key, value] of Object.entries(counterparty)) {
+  for (const [key, value] of Object.entries(values)) {
     const validator = counterPartyFormValidator[key as keyof CounterpartyFormData];
-    if (!validator.errorHandler(value)) {
-      newErrors[key as keyof CounterpartyFormErrors] = validator.message;
+    if (validator && !validator.errorHandler(value)) {
+      errors[key as keyof CounterpartyFormData] = validator.message;
     }
   }
-  setErrors(newErrors);
+
+  return errors;
 };
