@@ -1,4 +1,4 @@
-import { CounterpartyFormData} from '../../../types';
+import { CounterpartyFormData } from '../../../types';
 
 /**
  * Validates INN (Taxpayer Identification Number)

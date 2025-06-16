@@ -66,6 +66,10 @@ const CounterpartyModal = () => {
     return null;
   };
 
+  const parseDigitsOnly = (value: string) => {
+    return value ? value.replace(/\D/g, '') : '';
+  };
+
   return (
     <Modal show={isOpen} onClose={onClose}>
       <Form
@@ -103,7 +107,7 @@ const CounterpartyModal = () => {
                 </Field>
 
                 {/* INN field */}
-                <Field name="inn">
+                <Field name="inn" parse={parseDigitsOnly}>
                   {({ input, meta }) => (
                     <div>
                       <div className="mb-2 block">
@@ -145,7 +149,7 @@ const CounterpartyModal = () => {
                 </Field>
 
                 {/* KPP field */}
-                <Field name="kpp">
+                <Field name="kpp" parse={parseDigitsOnly}>
                   {({ input, meta }) => (
                     <div>
                       <div className="mb-2 block">
