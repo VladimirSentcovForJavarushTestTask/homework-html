@@ -1,8 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, Navbar, NavbarBrand} from 'flowbite-react';
+import React from 'react';
+import { Button, Navbar, NavbarBrand } from 'flowbite-react';
 import logo from '../../../assets/images/logo_moysklad.svg';
-import apiService from "../../../services/ApiService";
-import {cleanUpTimer, registrarTimer} from "../../utils/utils";
 
 /**
  * Props for the Header component
@@ -32,43 +30,20 @@ interface HeaderProps {
  * - Clicking the "Add" button triggers the onAddNew callback
  * - Dark mode support for text colors
  */
-const Header: React.FC<HeaderProps> = ({onAddNew}) => {
-  const timerRef = useRef<number | null>(null);
-  const [status, setStatus] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadStatus() {
-      console.log("loadStatus");
-      try {
-        const response = await apiService.get('/status',);
-        if (response.ok) {
-          setStatus("OK");
-        }else {
-          setStatus("ERROR");
-        }
-      }catch (err){
-        setStatus("ERROR");
-      }
-
-    }
-    loadStatus();
-    registrarTimer(timerRef, loadStatus, 1000)
-    return () =>  cleanUpTimer(timerRef);
-  }, []);
-
+const Header: React.FC<HeaderProps> = ({ onAddNew }) => {
   return (
-      <Navbar>
-        <NavbarBrand href="/">
-          <img src={logo} className="mr-3 h-6 sm:h-9" alt="МойСклад Logo"/>
-          <span className="space-x-3"></span>
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          МойСклад:{status}
+    <Navbar>
+      <NavbarBrand href="/">
+        <img src={logo} className="mr-3 h-6 sm:h-9" alt="МойСклад Logo" />
+        <span className="space-x-3"></span>
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          МойСклад
         </span>
-        </NavbarBrand>
-        <div className="flex md:order-2">
-          <Button onClick={onAddNew}>Добавить</Button>
-        </div>
-      </Navbar>
+      </NavbarBrand>
+      <div className="flex md:order-2">
+        <Button onClick={onAddNew}>Добавить</Button>
+      </div>
+    </Navbar>
   );
 };
 
