@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import {RefObject} from "react";
 
 /**
  * Escapes special HTML characters to prevent HTML/JS injection.
@@ -10,12 +10,12 @@ export function escapeHtml(str?: string) {
     return '';
   }
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-    .replace(/\//g, '&#47;');
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;')
+  .replace(/\//g, '&#47;');
 }
 
 export function cleanUpTimer(timerRef: RefObject<number | null>) {
@@ -25,11 +25,7 @@ export function cleanUpTimer(timerRef: RefObject<number | null>) {
   }
 }
 
-export function registrarTimer(
-  timerRef: RefObject<number | null>,
-  callback: () => void,
-  interval: number = 10000
-) {
+export function registrarTimer(timerRef: RefObject<number | null>, callback: () => void, interval: number = 10000) {
   if (timerRef.current === null) {
     timerRef.current = window.setInterval(callback, interval);
   }

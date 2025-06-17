@@ -43,7 +43,7 @@ describe('CounterpartyModal', () => {
 
   it('renders and displays fields', async () => {
     jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(createMockContext());
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
@@ -63,7 +63,7 @@ describe('CounterpartyModal', () => {
   it('validates input and calls handleSave and setIsModalOpen', async () => {
     const mockContext = createMockContext({ editingCounterparty: null });
     jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(mockContext);
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
@@ -72,7 +72,7 @@ describe('CounterpartyModal', () => {
     await act(async () => {
       fireEvent.click(screen.getByText(/Сохранить/i));
     });
-
+    
     expect(mockContext.handleSave).not.toHaveBeenCalled();
 
     // Fill in valid data
@@ -86,7 +86,7 @@ describe('CounterpartyModal', () => {
     await act(async () => {
       fireEvent.click(screen.getByText(/Сохранить/i));
     });
-
+    
     await waitFor(() => {
       expect(mockContext.handleSave).toHaveBeenCalled();
     });
@@ -95,15 +95,15 @@ describe('CounterpartyModal', () => {
   it('calls setIsModalOpen when cancel is clicked', async () => {
     const mockContext = createMockContext();
     jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(mockContext);
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
-
+    
     await act(async () => {
       fireEvent.click(screen.getByText(/Отмена/i));
     });
-
+    
     expect(mockContext.setIsModalOpen).toHaveBeenCalledWith(false);
   });
 
@@ -111,27 +111,27 @@ describe('CounterpartyModal', () => {
     jest
       .spyOn(CounterpartyContext, 'useCounterpartyContext')
       .mockReturnValue(createMockContext({ editingCounterparty: null }));
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
-
+    
     expect(screen.getByText(/Новый контрагент/i)).toBeInTheDocument();
   });
 
   it('shows correct title for editing counterparty', async () => {
     jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(createMockContext());
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
-
+    
     expect(screen.getByText(/Редактировать контрагента/i)).toBeInTheDocument();
   });
 
   it('validates INN format', async () => {
     jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(createMockContext());
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
@@ -140,7 +140,7 @@ describe('CounterpartyModal', () => {
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/ИНН/i), { target: { value: '123' } });
     });
-
+    
     await waitFor(() => {
       expect(screen.getByText(/ИНН должен содержать 11 цифр/i)).toBeInTheDocument();
     });
@@ -149,7 +149,7 @@ describe('CounterpartyModal', () => {
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/ИНН/i), { target: { value: '22345678901' } });
     });
-
+    
     await waitFor(() => {
       expect(screen.queryByText(/ИНН должен содержать 11 цифр/i)).not.toBeInTheDocument();
     });
@@ -157,7 +157,7 @@ describe('CounterpartyModal', () => {
 
   it('validates KPP format', async () => {
     jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(createMockContext());
-
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
@@ -166,7 +166,7 @@ describe('CounterpartyModal', () => {
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/КПП/i), { target: { value: '123' } });
     });
-
+    
     await waitFor(() => {
       expect(screen.getByText(/КПП должен содержать 9 цифр/i)).toBeInTheDocument();
     });
@@ -175,49 +175,45 @@ describe('CounterpartyModal', () => {
     await act(async () => {
       fireEvent.change(screen.getByLabelText(/КПП/i), { target: { value: '123456789' } });
     });
-
+    
     await waitFor(() => {
       expect(screen.queryByText(/КПП должен содержать 9 цифр/i)).not.toBeInTheDocument();
     });
   });
 
   it('filters non-digit characters in INN field', async () => {
-    jest
-      .spyOn(CounterpartyContext, 'useCounterpartyContext')
-      .mockReturnValue(createMockContext({ editingCounterparty: null }));
-
+    jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(createMockContext({ editingCounterparty: null }));
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
 
     const innInput = screen.getByLabelText(/ИНН/i) as HTMLInputElement;
-
+    
     // Try typing letters and special characters
     await act(async () => {
       fireEvent.change(innInput, { target: { value: '123abc456!@#789' } });
     });
-
+    
     await waitFor(() => {
       expect(innInput.value).toBe('123456789');
     });
   });
 
   it('filters non-digit characters in KPP field', async () => {
-    jest
-      .spyOn(CounterpartyContext, 'useCounterpartyContext')
-      .mockReturnValue(createMockContext({ editingCounterparty: null }));
-
+    jest.spyOn(CounterpartyContext, 'useCounterpartyContext').mockReturnValue(createMockContext({ editingCounterparty: null }));
+    
     await act(async () => {
       render(<CounterpartyModal />);
     });
 
     const kppInput = screen.getByLabelText(/КПП/i) as HTMLInputElement;
-
+    
     // Try typing letters and special characters
     await act(async () => {
       fireEvent.change(kppInput, { target: { value: '123abc456' } });
     });
-
+    
     await waitFor(() => {
       expect(kppInput.value).toBe('123456');
     });

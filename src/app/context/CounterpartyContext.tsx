@@ -1,23 +1,9 @@
-import React, {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from 'react';
-import { Counterparty, CounterpartyFormData } from '../types';
+import React, {createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useReducer, useRef,} from 'react';
+import {Counterparty, CounterpartyFormData} from '../types';
 import counterpartyService from '../../services/CounterpartyService';
 import isEqual from 'lodash/isEqual';
-import {
-  ActionType,
-  CounterpartyContextState,
-  counterpartyInitialState,
-  counterpartyReducer,
-} from './ConterpatyStore';
-import { cleanUpTimer, registrarTimer } from '../utils/utils';
+import {ActionType, CounterpartyContextState, counterpartyInitialState, counterpartyReducer,} from './ConterpatyStore';
+import {cleanUpTimer, registrarTimer} from "../utils/utils";
 
 /**
  * Props for the CounterpartyProvider component
@@ -82,7 +68,7 @@ export const useCounterpartyContext = () => {
  *   <App />
  * </CounterpartyProvider>
  */
-export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ children }) => {
+export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({children}) => {
   const [state, dispatch] = useReducer(counterpartyReducer, counterpartyInitialState);
 
   const timerRef = useRef<number | null>(null);
@@ -92,7 +78,7 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
       await firstLoad();
       registrarTimer(timerRef, async () => {
         await loadCounterparties();
-      });
+      })
     };
     bootstrap();
     return () => cleanUpTimer(timerRef);
@@ -110,7 +96,7 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
       });
     } catch (error) {
       console.error('Failed to load counterparties:', error);
-      dispatch({ type: ActionType.LOAD_ERROR });
+      dispatch({type: ActionType.LOAD_ERROR});
     }
   };
 
@@ -119,7 +105,7 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
    * @private
    */
   const firstLoad = async () => {
-    dispatch({ type: ActionType.LOAD_START });
+    dispatch({type: ActionType.LOAD_START});
     await loadCounterparties();
   };
 
@@ -130,7 +116,7 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
    */
   const handleEdit = useCallback(async (counterpartyId: string) => {
     const counterparty = await counterpartyService.getCounterpartyById(counterpartyId);
-    dispatch({ type: ActionType.OPEN_EDIT_MODAL, payload: counterparty });
+    dispatch({type: ActionType.OPEN_EDIT_MODAL, payload: counterparty});
   }, []);
 
   /**
@@ -141,14 +127,14 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
    */
   const handleDelete = useCallback(async (id: string): Promise<void> => {
     try {
-      dispatch({ type: ActionType.DELETE_COUNTERPARTY, payload: id });
+      dispatch({type: ActionType.DELETE_COUNTERPARTY, payload: id});
       const updatedList = await counterpartyService.deleteCounterparty(id);
       if (!isEqual(updatedList, state.counterparties)) {
-        dispatch({ type: ActionType.LOAD_SUCCESS, payload: updatedList });
+        dispatch({type: ActionType.LOAD_SUCCESS, payload: updatedList});
         return;
       }
     } catch (error) {
-      dispatch({ type: ActionType.LOAD_ERROR });
+      dispatch({type: ActionType.LOAD_ERROR});
       console.error('Failed to delete counterparty:', error);
     }
   }, []);
@@ -163,7 +149,7 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
     try {
       let updatedCounterparties: Counterparty[];
       if (data.id) {
-        dispatch({ type: ActionType.UPDATE_COUNTERPARTY, payload: { ...data, id: data.id } });
+        dispatch({type: ActionType.UPDATE_COUNTERPARTY, payload: {...data, id: data.id}});
         updatedCounterparties = await counterpartyService.updateCounterparty(data.id, data);
       } else {
         updatedCounterparties = await counterpartyService.createCounterparty({
@@ -172,12 +158,12 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
         });
       }
       if (!isEqual(updatedCounterparties, state.counterparties)) {
-        dispatch({ type: ActionType.LOAD_SUCCESS, payload: updatedCounterparties });
+        dispatch({type: ActionType.LOAD_SUCCESS, payload: updatedCounterparties});
       }
     } catch (error) {
-      dispatch({ type: ActionType.LOAD_ERROR });
+      dispatch({type: ActionType.LOAD_ERROR});
     } finally {
-      dispatch({ type: ActionType.CLOSE_MODAL });
+      dispatch({type: ActionType.CLOSE_MODAL});
     }
   }, []);
 
@@ -187,44 +173,44 @@ export const CounterpartyProvider: React.FC<CounterpartyProviderProps> = ({ chil
    * @public
    */
   const setIsModalOpen = useCallback(
-    (isOpen: boolean) =>
-      isOpen
-        ? dispatch({ type: ActionType.OPEN_ADD_MODAL })
-        : dispatch({ type: ActionType.CLOSE_MODAL }),
-    []
+      (isOpen: boolean) =>
+          isOpen
+              ? dispatch({type: ActionType.OPEN_ADD_MODAL})
+              : dispatch({type: ActionType.CLOSE_MODAL}),
+      []
   );
 
   /**
    * Handles adding a new counterparty
    * @public
    */
-  const handleAddNew = useCallback(() => dispatch({ type: ActionType.OPEN_ADD_MODAL }), []);
+  const handleAddNew = useCallback(() => dispatch({type: ActionType.OPEN_ADD_MODAL}), []);
 
   const value = useMemo<CounterpartyContextType>(
-    () => ({
-      counterparties: state.counterparties,
-      editingCounterparty: state.editingCounterparty ?? undefined,
-      isLoading: state.isLoading,
-      isModalOpen: state.isModalOpen,
-      loadedSuccess: state.loadedSuccess,
-      setIsModalOpen,
-      handleAddNew,
-      handleEdit,
-      handleDelete,
-      handleSave,
-    }),
-    [
-      state.counterparties,
-      state.editingCounterparty,
-      state.isLoading,
-      state.isModalOpen,
-      state.loadedSuccess,
-      setIsModalOpen,
-      handleAddNew,
-      handleEdit,
-      handleDelete,
-      handleSave,
-    ]
+      () => ({
+        counterparties: state.counterparties,
+        editingCounterparty: state.editingCounterparty ?? undefined,
+        isLoading: state.isLoading,
+        isModalOpen: state.isModalOpen,
+        loadedSuccess: state.loadedSuccess,
+        setIsModalOpen,
+        handleAddNew,
+        handleEdit,
+        handleDelete,
+        handleSave,
+      }),
+      [
+        state.counterparties,
+        state.editingCounterparty,
+        state.isLoading,
+        state.isModalOpen,
+        state.loadedSuccess,
+        setIsModalOpen,
+        handleAddNew,
+        handleEdit,
+        handleDelete,
+        handleSave,
+      ]
   );
 
   return <CounterpartyContext.Provider value={value}>{children}</CounterpartyContext.Provider>;
