@@ -1,7 +1,29 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import FormError from './FormError';
+import FormError, { getInputColor } from './FormError';
+
+describe('getInputColor', () => {
+  it('returns failure when there is an error', () => {
+    expect(getInputColor(true, '')).toBe('failure');
+    expect(getInputColor(true, 'some value')).toBe('failure');
+  });
+
+  it('returns success when there is no error and value exists', () => {
+    expect(getInputColor(false, 'some value')).toBe('success');
+    expect(getInputColor(false, '123')).toBe('success');
+  });
+
+  it('returns gray when there is no error and value is empty', () => {
+    expect(getInputColor(false, '')).toBe('gray');
+    expect(getInputColor(false, '   ')).toBe('gray');
+  });
+
+  it('handles whitespace-only values as empty', () => {
+    expect(getInputColor(false, '   ')).toBe('gray');
+    expect(getInputColor(false, '\t\n')).toBe('gray');
+  });
+});
 
 describe('FormError', () => {
   it('renders error message when error exists and field is touched', () => {

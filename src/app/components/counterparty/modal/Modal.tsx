@@ -12,7 +12,7 @@ import { CounterpartyFormData } from '../../../types';
 import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 import { Field, FieldInputProps, Form } from 'react-final-form';
 import { validate } from './ModalFormValidator';
-import FormError from './FormError';
+import FormError, { getInputColor } from './FormError';
 
 /**
  * Modal component for creating and editing counterparties
@@ -50,16 +50,6 @@ const CounterpartyModal = () => {
     ...counterparty,
   };
 
-  type fieldMeta = {
-    dirty?: boolean;
-    error?: any;
-    touched?: boolean;
-  };
-
-  const getColor = ({ error, dirty, touched }: fieldMeta, input: FieldInputProps) => {
-    return error && (touched || dirty) ? 'failure' : input.value ? 'success' : 'gray';
-  };
-
   const parseDigitsOnly = (value: string) => {
     return value ? value.replace(/\D/g, '') : '';
   };
@@ -93,7 +83,7 @@ const CounterpartyModal = () => {
                         required
                         placeholder="МойСклад"
                         minLength={1}
-                        color={getColor(meta, input)}
+                        color={getInputColor(!!meta.error && !!(meta.touched || meta.dirty), input.value)}
                       />
                       <FormError error={meta.error} dirty={meta.dirty} touched={meta.touched} />
                     </div>
@@ -111,7 +101,7 @@ const CounterpartyModal = () => {
                         {...input}
                         id="inn"
                         required
-                        color={getColor(meta, input)}
+                        color={getInputColor(!!meta.error && !!(meta.touched || meta.dirty), input.value)}
                         placeholder="12345678901"
                         inputMode="numeric"
                         maxLength={11}
@@ -133,7 +123,7 @@ const CounterpartyModal = () => {
                         {...input}
                         id="address"
                         required
-                        color={getColor(meta, input)}
+                        color={getInputColor(!!meta.error && !!(meta.touched || meta.dirty), input.value)}
                         placeholder="Москва, ул. Ленина, д. 1"
                         minLength={1}
                       />
@@ -153,7 +143,7 @@ const CounterpartyModal = () => {
                         {...input}
                         id="kpp"
                         required
-                        color={getColor(meta, input)}
+                        color={getInputColor(!!meta.error && !!(meta.touched || meta.dirty), input.value)}
                         placeholder="123456789"
                         inputMode="numeric"
                         maxLength={9}
