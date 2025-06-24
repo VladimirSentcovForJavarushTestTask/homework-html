@@ -12,6 +12,7 @@ import { CounterpartyFormData } from '../../../types';
 import { useCounterpartyContext } from '../../../context/CounterpartyContext';
 import { Field, FieldInputProps, Form } from 'react-final-form';
 import { validate } from './ModalFormValidator';
+import FormError from './FormError';
 
 /**
  * Modal component for creating and editing counterparties
@@ -59,13 +60,6 @@ const CounterpartyModal = () => {
     return error && (touched || dirty) ? 'failure' : input.value ? 'success' : 'gray';
   };
 
-  const renderError = ({ error, dirty, touched }: fieldMeta) => {
-    if (error && (touched || dirty)) {
-      return <p className="text-red-600 text-xs mt-1">{error}</p>;
-    }
-    return null;
-  };
-
   const parseDigitsOnly = (value: string) => {
     return value ? value.replace(/\D/g, '') : '';
   };
@@ -101,7 +95,7 @@ const CounterpartyModal = () => {
                         minLength={1}
                         color={getColor(meta, input)}
                       />
-                      {renderError(meta)}
+                      <FormError error={meta.error} dirty={meta.dirty} touched={meta.touched} />
                     </div>
                   )}
                 </Field>
@@ -123,7 +117,7 @@ const CounterpartyModal = () => {
                         maxLength={11}
                         minLength={11}
                       />
-                      {renderError(meta)}
+                      <FormError error={meta.error} dirty={meta.dirty} touched={meta.touched} />
                     </div>
                   )}
                 </Field>
@@ -143,7 +137,7 @@ const CounterpartyModal = () => {
                         placeholder="Москва, ул. Ленина, д. 1"
                         minLength={1}
                       />
-                      {renderError(meta)}
+                      <FormError error={meta.error} dirty={meta.dirty} touched={meta.touched} />
                     </div>
                   )}
                 </Field>
@@ -165,7 +159,7 @@ const CounterpartyModal = () => {
                         maxLength={9}
                         minLength={9}
                       />
-                      {renderError(meta)}
+                      <FormError error={meta.error} dirty={meta.dirty} touched={meta.touched} />
                     </div>
                   )}
                 </Field>
